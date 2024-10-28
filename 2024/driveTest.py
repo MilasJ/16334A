@@ -77,11 +77,11 @@ def rc_auto_loop_function_controller_1():
                 lifterator.stop()
                 lifteratorStopped = True
         wait(20,MSEC)
-remote_control_code_enabled = True        
+remote_control_code_enabled = True
 def when_started1():
     drivetrain.set_drive_velocity(100, PERCENT)
     drivetrain.set_turn_velocity(100, PERCENT)
-    pass
+    lifterator.set_max_torque(100, PERCENT)
 def autonomousTasks():
     pass
 def driverTasks():
