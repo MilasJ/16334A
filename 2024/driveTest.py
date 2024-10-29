@@ -64,10 +64,10 @@ def rc_auto_loop_function_controller_1():
             else:
                 needStopRight = True
             if needStopLeft:
-                left.set_velocity(((leftPos/100)**3)*100)
+                left.set_velocity(((leftPos/100)**3)*100, PERCENT)
                 left.spin(FORWARD)
             if needStopRight:
-                right.set_velocity(((rightPos/100)**3)*100)
+                right.set_velocity(((rightPos/100)**3)*100, PERCENT)
             if c15.buttonR1.pressing() or c15.buttonR2.pressing():
                 lifterator.spin(FORWARD)
                 lifteratorStopped = False
