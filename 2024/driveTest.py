@@ -79,6 +79,7 @@ def rc_auto_loop_function_controller_1():
                 lifteratorStopped = True
         wait(20,MSEC)
 remote_control_code_enabled = True
+rc_auto_loop_thread_controller_1 = Thread(rc_auto_loop_function_controller_1)
 def when_started1():
     drivetrain.set_drive_velocity(100, PERCENT)
     drivetrain.set_turn_velocity(100, PERCENT)
@@ -87,4 +88,17 @@ def autonomousTasks():
     pass
 def driverTasks():
     pass
+
+def autonomousFunction():
+    auton_task_0 = Thread(autonomousTasks)
+    while(competition.is_autonomous() and competition.is_enabled()):
+        wait(10, MSEC)
+    auton_task_0.stop()
+def driverFunction():
+    driver_control_task_0 = Thread(driverTasks)
+    while(competition.is_driver_control() and competition.is_enabled()):
+        wait(10, MSEC)
+    driver_control_task_0.stop()
+
+competition = Competition(driverFunction, autonomousFunction)
 when_started1()
