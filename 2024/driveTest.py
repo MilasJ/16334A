@@ -36,12 +36,13 @@ print("\033[2J")
 #endregion VEXcode Generated Robot Configuration
 left = MotorGroup(Motor(Ports.PORT12, 0, True), Motor(Ports.PORT13, 0, True))
 right = MotorGroup(Motor(Ports.PORT11),Motor(Ports.PORT14))
-drivetrain = Drivetrain(left, right, 10, 8, INCHES, 3/7)
+drivetrain = DriveTrain(left, right, 10, 8, INCHES, 3/7)
 lifterator = MotorGroup(Motor(Ports.PORT19, 0), Motor(Ports.PORT20, 0, True))
 c15 = Controller()
 myVariable = 0
 
-needStopLeft, needStopRight = False
+needStopLeft = False
+needStopRight = False
 lifteratorStopped = True
 
 def rc_auto_loop_function_controller_1():
