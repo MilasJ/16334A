@@ -49,8 +49,8 @@ def rc_auto_loop_function_controller_1():
     global needStopLeft, needStopRight, lifteratorStopped, remote_control_code_enabled
     while True:
         if remote_control_code_enabled:
-            leftPos = c15.axis3.position()/100
-            rightPos = c15.axis2.position()/100
+            leftPos = c15.axis3.position()
+            rightPos = c15.axis2.position()
             if -5 < leftPos < 5:
                 if needStopLeft:
                     left.stop()
