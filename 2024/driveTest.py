@@ -34,8 +34,8 @@ wait(200, MSEC)
 print("\033[2J")
 
 #endregion VEXcode Generated Robot Configuration
-left = MotorGroup(Motor(Ports.PORT12, 0, True), Motor(Ports.PORT13, 0, True))
-right = MotorGroup(Motor(Ports.PORT11),Motor(Ports.PORT14))
+left = MotorGroup(Motor(Ports.PORT11, 0, True), Motor(Ports.PORT14, 0, True))
+right = MotorGroup(Motor(Ports.PORT12),Motor(Ports.PORT13))
 drivetrain = DriveTrain(left, right, 10, 8, INCHES, 3/7)
 lifterator = MotorGroup(Motor(Ports.PORT19, 0), Motor(Ports.PORT20, 0, True))
 c15 = Controller()
