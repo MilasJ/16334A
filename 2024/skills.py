@@ -86,7 +86,7 @@ def when_started1():
     drivetrain.set_turn_velocity(100, PERCENT)
     lifterator.set_max_torque(100, PERCENT)
 def autonomousTasks():
-    # drivetrain.drive_for(FORWARD, )
+    #push mobile goals to corners
     pass
 def driverTasks():
     pass
