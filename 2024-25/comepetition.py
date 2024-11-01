@@ -45,7 +45,7 @@ myVariable = 0
 needStopLeft = False
 needStopRight = False
 lifteratorStopped = True
-
+#infinite loop for motors
 def rc_auto_loop_function_controller_1():
     global needStopLeft, needStopRight, lifteratorStopped, remote_control_code_enabled
     while True:
@@ -65,19 +65,22 @@ def rc_auto_loop_function_controller_1():
             else:
                 needStopRight = True
             if needStopLeft:
-                left.set_velocity(((leftPos/100)**3)*100, PERCENT)
+                left.set_velocity(((leftPos/100)**3)*100, PERCENT)#exponential drive for fine-tuning
                 left.spin(FORWARD)
             if needStopRight:
                 right.set_velocity(((rightPos/100)**3)*100, PERCENT)
                 right.spin(FORWARD)
             if c15.buttonR1.pressing() or c15.buttonR2.pressing():
-                lifterator.spin(FORWARD)
+                #if either or both right shoulder buttons pressed
+                lifterator.spin(FORWARD)#translation: lift goes up
                 lifteratorStopped = False
             elif c15.buttonL1.pressing() or c15.buttonL2.pressing():
-                lifterator.spin(REVERSE)
+                #if either or both left shoulder buttons pressed
+                lifterator.spin(REVERSE)#translation: lift goes down
                 lifteratorStopped = False
             elif not lifteratorStopped:
-                lifterator.stop()
+                #if no shoulder buttons pressed
+                lifterator.stop()#translation: lift stops moving
                 lifteratorStopped = True
         wait(20,MSEC)
 remote_control_code_enabled = True
@@ -86,14 +89,14 @@ def when_started1():
     drivetrain.set_drive_velocity(100, PERCENT)
     drivetrain.set_turn_velocity(100, PERCENT)
     lifterator.set_max_torque(100, PERCENT)
-    lifterator.set_stopping(HOLD)
+    lifterator.set_stopping(HOLD)#lift stops immediately and locks in place
 def autonomousTasks():
-    lifterator.spin(FORWARD)
-    drivetrain.drive(FORWARD)
-    wait(1.5,SECONDS)
+    lifterator.spin(FORWARD)#lifterator goes up
+    drivetrain.drive(FORWARD)#robot moves forward
+    wait(1.5,SECONDS)#time it takes to bump into the ladder
     drivetrain.stop()
 def driverTasks():
-    pass
+    pass #we have nothing here
 
 def autonomousFunction():
     auton_task_0 = Thread(autonomousTasks)

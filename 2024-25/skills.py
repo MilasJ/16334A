@@ -34,6 +34,7 @@ wait(200, MSEC)
 print("\033[2J")
 
 #endregion VEXcode Generated Robot Configuration
+#setup from here is same as competition
 from math import pi
 left = MotorGroup(Motor(Ports.PORT11, 0, True), Motor(Ports.PORT14, 0, True))
 right = MotorGroup(Motor(Ports.PORT12),Motor(Ports.PORT13))
@@ -87,7 +88,8 @@ def when_started1():
     drivetrain.set_turn_velocity(100, PERCENT)
     lifterator.set_max_torque(100, PERCENT)
 def autonomousTasks():
-    #push mobile goals to corners
+    #TODO: push mobile goals to corners
+    #as of 15:24 November 1, 2024, we have no ideas for skills. Our sincerest apologies, judges.
     pass
 def driverTasks():
     pass
