@@ -36,7 +36,7 @@ print("\033[2J")
 #endregion VEXcode Generated Robot Configuration
 left = MotorGroup(Motor(Ports.PORT11, 0, True), Motor(Ports.PORT14, 0, True))
 right = MotorGroup(Motor(Ports.PORT12),Motor(Ports.PORT13))
-drivetrain = DriveTrain(left, right, 10, 8, INCHES, 3/7)
+drivetrain = DriveTrain(left, right, 10, 8, INCHES, 7/3)
 lifterator = MotorGroup(Motor(Ports.PORT19, 0), Motor(Ports.PORT20, 0, True))
 c15 = Controller()
 myVariable = 0
@@ -86,7 +86,7 @@ def when_started1():
     drivetrain.set_turn_velocity(100, PERCENT)
     lifterator.set_max_torque(100, PERCENT)
 def autonomousTasks():
-    # drivetrain.drive_for(FORWARD, )
+    drivetrain.drive_for(FORWARD, 48, INCHES)
     pass
 def driverTasks():
     pass
