@@ -1,7 +1,7 @@
 
 #region VEXcode Generated Robot Configuration
 from vex import *
-from os import urandom
+import urandom
 
 # Brain should be defined by default
 brain=Brain()
