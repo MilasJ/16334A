@@ -89,7 +89,7 @@ def when_started1():
     drivetrain.set_turn_velocity(100, PERCENT)
     lifterator.set_max_torque(100, PERCENT)
 def autonomousTasks():
-    #TODO: #1 push mobile goals to corners
+    #TODO: push mobile goals to corners
     #as of 15:24 November 1, 2024, we have no ideas for skills. Our sincerest apologies, judges.
     pass
 def driverTasks():

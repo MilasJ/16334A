@@ -46,7 +46,7 @@ needStopLeft = False
 needStopRight = False
 lifteratorStopped = True
 #infinite loop for motors
-#TODO: #2 change drivetrain to RC controls
+#TODO: #3 change drivetrain to RC controls
 def rc_auto_loop_function_controller_1():
     global needStopLeft, needStopRight, lifteratorStopped, remote_control_code_enabled
     while True:
@@ -91,7 +91,7 @@ def when_started1():
     drivetrain.set_turn_velocity(100, PERCENT)
     lifterator.set_max_torque(100, PERCENT)
     lifterator.set_stopping(HOLD)#lift stops immediately and locks in place
-def autonomousTasks():
+def autonomousTasks(): #TODO #4 change direction
     lifterator.spin(FORWARD)#lifterator goes up
     drivetrain.drive(FORWARD)#robot moves forward
     wait(1.5,SECONDS)#time it takes to bump into the ladder
