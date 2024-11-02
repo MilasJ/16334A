@@ -1,0 +1,18 @@
+{
+	"project": {
+		"name": "competition",
+		"slot": 1,
+		"description": "",
+		"platform": "V5",
+		"creationDate": "Sat, 02 Nov 2024 14:41:23 GMT",
+		"language": "python",
+		"python": {
+			"main": "/src/main.py"
+		},
+		"sdkVersion": "V5_1_0_1_19"
+	},
+	"extension": {
+		"version": "0.6.0",
+		"json": 1
+	}
+}
