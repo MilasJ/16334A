@@ -1,4 +1,3 @@
-
 #region VEXcode Generated Robot Configuration
 from vex import *
 import urandom
