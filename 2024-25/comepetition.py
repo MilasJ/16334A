@@ -38,7 +38,7 @@ from math import pi
 left = MotorGroup(Motor(Ports.PORT11, GearSetting.RATIO_18_1, True), Motor(Ports.PORT14, GearSetting.RATIO_18_1, True))
 right = MotorGroup(Motor(Ports.PORT12),Motor(Ports.PORT13))
 drivetrain = DriveTrain(left, right, 4*pi,10, 8, INCHES, 3/7)
-lifeterator = Motor(Ports.PORT1)
+lifterator = Motor(Ports.PORT1)
 c15 = Controller()
 myVariable = 0
 
