@@ -34,19 +34,18 @@ wait(200, MSEC)
 print("\033[2J")
 
 #endregion VEXcode Generated Robot Configuration
-#setup from here is same as competition
 from math import pi
-left = MotorGroup(Motor(Ports.PORT11, 0, True), Motor(Ports.PORT14, 0, True))
+left = MotorGroup(Motor(Ports.PORT11, GearSetting.RATIO_18_1, True), Motor(Ports.PORT14, GearSetting.RATIO_18_1, True))
 right = MotorGroup(Motor(Ports.PORT12),Motor(Ports.PORT13))
-drivetrain = DriveTrain(left, right, 4*pi, 10, 8, INCHES, 3/7)
-lifterator = MotorGroup(Motor(Ports.PORT19, 0), Motor(Ports.PORT20, 0, True))
+drivetrain = DriveTrain(left, right, 4*pi,10, 8, INCHES, 3/7)
+lifeterator = Motor(Ports.PORT1)
 c15 = Controller()
 myVariable = 0
 
 needStopLeft = False
 needStopRight = False
 lifteratorStopped = True
-
+#infinite loop for motors
 def rc_auto_loop_function_controller_1():
     global needStopLeft, needStopRight, lifteratorStopped, remote_control_code_enabled
     while True:
@@ -66,19 +65,19 @@ def rc_auto_loop_function_controller_1():
             else:
                 needStopRight = True
             if needStopLeft:
-                left.set_velocity(((leftPos/100)**3)*100, PERCENT)
+                left.set_velocity(((leftPos/100)**3)*100, PERCENT)#exponential drive for fine-tuning
                 left.spin(FORWARD)
             if needStopRight:
                 right.set_velocity(((rightPos/100)**3)*100, PERCENT)
                 right.spin(FORWARD)
-            if c15.buttonR1.pressing() or c15.buttonR2.pressing():
-                lifterator.spin(FORWARD)
+            if c15.buttonA.pressing(): #if pressing the A button
+                lifterator.spin(FORWARD)#translation: lift goes up
                 lifteratorStopped = False
-            elif c15.buttonL1.pressing() or c15.buttonL2.pressing():
-                lifterator.spin(REVERSE)
+            elif c15.buttonB.pressing(): #if pressing the B button
+                lifterator.spin(REVERSE)#translation: lift goes down
                 lifteratorStopped = False
-            elif not lifteratorStopped:
-                lifterator.stop()
+            elif not lifteratorStopped: #if neither button is pressed
+                lifterator.stop()#translation: lift stops moving
                 lifteratorStopped = True
         wait(20,MSEC)
 remote_control_code_enabled = True

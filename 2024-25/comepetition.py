@@ -38,7 +38,7 @@ from math import pi
 left = MotorGroup(Motor(Ports.PORT11, GearSetting.RATIO_18_1, True), Motor(Ports.PORT14, GearSetting.RATIO_18_1, True))
 right = MotorGroup(Motor(Ports.PORT12),Motor(Ports.PORT13))
 drivetrain = DriveTrain(left, right, 4*pi,10, 8, INCHES, 3/7)
-lifterator = MotorGroup(Motor(Ports.PORT19, 0), Motor(Ports.PORT20, 0, True))
+lifeterator = Motor(Ports.PORT1)
 c15 = Controller()
 myVariable = 0
 
@@ -46,7 +46,6 @@ needStopLeft = False
 needStopRight = False
 lifteratorStopped = True
 #infinite loop for motors
-#TODO: #3 change drivetrain to RC controls
 def rc_auto_loop_function_controller_1():
     global needStopLeft, needStopRight, lifteratorStopped, remote_control_code_enabled
     while True:
@@ -71,16 +70,13 @@ def rc_auto_loop_function_controller_1():
             if needStopRight:
                 right.set_velocity(((rightPos/100)**3)*100, PERCENT)
                 right.spin(FORWARD)
-            if c15.buttonR1.pressing() or c15.buttonR2.pressing():
-                #if either or both right shoulder buttons pressed
+            if c15.buttonA.pressing(): #if pressing the A button
                 lifterator.spin(FORWARD)#translation: lift goes up
                 lifteratorStopped = False
-            elif c15.buttonL1.pressing() or c15.buttonL2.pressing():
-                #if either or both left shoulder buttons pressed
+            elif c15.buttonB.pressing(): #if pressing the B button
                 lifterator.spin(REVERSE)#translation: lift goes down
                 lifteratorStopped = False
-            elif not lifteratorStopped:
-                #if no shoulder buttons pressed
+            elif not lifteratorStopped: #if neither button is pressed
                 lifterator.stop()#translation: lift stops moving
                 lifteratorStopped = True
         wait(20,MSEC)
