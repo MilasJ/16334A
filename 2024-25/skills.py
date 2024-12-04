@@ -85,7 +85,7 @@ rc_auto_loop_thread_controller_1 = Thread(rc_auto_loop_function_controller_1)
 def when_started1():
     drivetrain.set_drive_velocity(100, PERCENT)
     drivetrain.set_turn_velocity(100, PERCENT)
-    lifterator.set_max_torque(100, PERCENT)
+    lifterator.set_velocity(100, PERCENT)
 def autonomousTasks():
     #TODO: push mobile goals to corners
     lifterator.spin(FORWARD)
@@ -98,7 +98,6 @@ def autonomousTasks():
     wait(.5, SECONDS)
     lifterator.stop()
     drivetrain.drive(FORWARD)
-    #as of 15:24 November 1, 2024, we have no ideas for skills. Our sincerest apologies, judges.
 def driverTasks():
     pass
 

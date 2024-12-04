@@ -85,7 +85,7 @@ rc_auto_loop_thread_controller_1 = Thread(rc_auto_loop_function_controller_1)
 def when_started1():
     drivetrain.set_drive_velocity(100, PERCENT)
     drivetrain.set_turn_velocity(100, PERCENT)
-    lifterator.set_max_torque(100, PERCENT)
+    lifterator.set_velocity(100, PERCENT)
     lifterator.set_stopping(HOLD)#lift stops immediately and locks in place
 def autonomousTasks(): #TODO #4 change direction
     lifterator.spin(FORWARD)#lifterator goes up
