@@ -39,6 +39,7 @@ left = MotorGroup(Motor(Ports.PORT11, GearSetting.RATIO_18_1, True), Motor(Ports
 right = MotorGroup(Motor(Ports.PORT12),Motor(Ports.PORT13))
 drivetrain = DriveTrain(left, right, 4*pi,10, 8, INCHES, 3/7)
 lifterator = Motor(Ports.PORT1)
+pneumatic1 = DigitalOut(brain.three_wire_port.a)
 c15 = Controller()
 myVariable = 0
 
@@ -79,6 +80,10 @@ def rc_auto_loop_function_controller_1():
             elif not lifteratorStopped: #if neither button is pressed
                 lifterator.stop()#translation: lift stops moving
                 lifteratorStopped = True
+            if c15.buttonX.pressing():
+                pneumatic1.set(False)
+            elif c15.buttonY.pressing():
+                pneumatic1.set(True)
         wait(20,MSEC)
 remote_control_code_enabled = True
 rc_auto_loop_thread_controller_1 = Thread(rc_auto_loop_function_controller_1)
@@ -87,6 +92,7 @@ def when_started1():
     drivetrain.set_turn_velocity(100, PERCENT)
     lifterator.set_velocity(100, PERCENT)
     lifterator.set_stopping(HOLD)#lift stops immediately and locks in place
+    pneumatic1.set(False)
 def autonomousTasks(): #TODO #4 change direction
     lifterator.spin(FORWARD)#lifterator goes up
     drivetrain.drive(FORWARD)#robot moves forward
