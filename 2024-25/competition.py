@@ -95,7 +95,7 @@ def when_started1():
     pneumatic1.set(False)
 def autonomousTasks(): #TODO #4 change direction
     drivetrain.drive(FORWARD)#robot moves forward
-    wait(1.5,SECONDS)#time it takes to bump into the ladder
+    wait(1.7,SECONDS)#time it takes to bump into the ladder
     drivetrain.stop()
 def driverTasks():
     pass #we have nothing here
