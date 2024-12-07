@@ -96,13 +96,13 @@ def when_started1():
 def autonomousTasks():
     #TODO: push mobile goals to corners
     pneumatic1.set(0)
-    drivetrain.drive(FORWARD)
+    drivetrain.drive(REVERSE)
     wait(.5, SECONDS)
     drivetrain.stop()
     pneumatic1.set(1)
     drivetrain.turn(RIGHT)
     wait(.5, SECONDS)
-    drivetrain.drive(FORWARD)
+    drivetrain.drive(REVERSE)
 def driverTasks():
     pass
 
