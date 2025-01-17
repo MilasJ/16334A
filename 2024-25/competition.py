@@ -38,7 +38,7 @@ from math import pi
 left = MotorGroup(Motor(Ports.PORT11, GearSetting.RATIO_18_1, True), Motor(Ports.PORT14, GearSetting.RATIO_18_1, True))
 right = MotorGroup(Motor(Ports.PORT12),Motor(Ports.PORT13))
 drivetrain = DriveTrain(left, right, 4*pi,10, 8, INCHES, 3/7)
-lifterator = Motor(Ports.PORT1)
+lifterator = Motor(Ports.PORT1, 1)
 pneumatic1 = DigitalOut(brain.three_wire_port.a)
 c15 = Controller()
 myVariable = 0
@@ -94,7 +94,7 @@ def when_started1():
     lifterator.set_stopping(HOLD)#lift stops immediately and locks in place
     pneumatic1.set(False)
 def autonomousTasks(): #TODO #4 change direction
-    # lifterator.spin(FORWARD)#lifterator goes up
+    lifterator.spin(FORWARD)#lifterator goes up
     drivetrain.drive(FORWARD)#robot moves forward
     wait(1.5,SECONDS)#time it takes to bump into the ladder
     drivetrain.stop()
