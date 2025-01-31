@@ -35,11 +35,17 @@ print("\033[2J")
 
 #endregion VEXcode Generated Robot Configuration
 from math import pi
-left = MotorGroup(Motor(Ports.PORT11, GearSetting.RATIO_18_1, True), Motor(Ports.PORT14, GearSetting.RATIO_18_1, True))
+
+#declaring cartridge colors to make this slightly easier to understand. Don't mind me.
+RED = 0
+GREEN = 1
+BLUE = 2
+
+left = MotorGroup(Motor(Ports.PORT11, GREEN, True), Motor(Ports.PORT14, GREEN, True))
 right = MotorGroup(Motor(Ports.PORT12),Motor(Ports.PORT13))
 drivetrain = DriveTrain(left, right, 4*pi,10, 8, INCHES, 3/7)
-lifterator = Motor(Ports.PORT1, 2)
-donut_eater = Motor(Ports.PORT2, 1, True)
+lifterator = Motor(Ports.PORT1, BLUE)
+donut_eater = Motor(Ports.PORT2, GREEN, True)
 pneumatic1 = DigitalOut(brain.three_wire_port.a)
 c15 = Controller()
 myVariable = 0
