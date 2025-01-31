@@ -53,9 +53,10 @@ myVariable = 0
 needStopLeft = False
 needStopRight = False
 lifteratorStopped = True
+donut_eaterStop = True
 #infinite loop for motors
 def rc_auto_loop_function_controller_1():
-    global needStopLeft, needStopRight, lifteratorStopped, remote_control_code_enabled
+    global needStopLeft, needStopRight, lifteratorStopped, donut_eaterStop, remote_control_code_enabled
     while True:
         if remote_control_code_enabled:
             leftPos = c15.axis3.position() + c15.axis1.position()
@@ -91,8 +92,12 @@ def rc_auto_loop_function_controller_1():
                 pneumatic1.set(False)
             elif c15.buttonY.pressing():
                 pneumatic1.set(True)
-            if c15.buttonLeft.pressing():
+            if c15.buttonL1.pressing() or c15.buttonL2.pressing():
                 donut_eater.spin(FORWARD)
+                donut_eaterStop = False
+            elif not donut_eaterStop:
+                donut_eater.stop()
+                donut_eaterStop = True
         wait(20,MSEC)
 remote_control_code_enabled = True
 rc_auto_loop_thread_controller_1 = Thread(rc_auto_loop_function_controller_1)
@@ -102,6 +107,7 @@ def when_started1():
     lifterator.set_velocity(62.5, PERCENT)
     lifterator.set_stopping(HOLD)#lift stops immediately and locks in place
     pneumatic1.set(False)
+    donut_eater.set_velocity(100, PERCENT)
 def autonomousTasks(): #TODO #4 change direction
     lifterator.spin(FORWARD)#lifterator goes up
     drivetrain.drive(FORWARD)#robot moves forward
