@@ -38,7 +38,8 @@ from math import pi
 left = MotorGroup(Motor(Ports.PORT11, GearSetting.RATIO_18_1, True), Motor(Ports.PORT14, GearSetting.RATIO_18_1, True))
 right = MotorGroup(Motor(Ports.PORT12),Motor(Ports.PORT13))
 drivetrain = DriveTrain(left, right, 4*pi,10, 8, INCHES, 3/7)
-lifterator = Motor(Ports.PORT1, 1)
+lifterator = Motor(Ports.PORT1, 2)
+donut_eater = Motor(Ports.PORT2, 1, True)
 pneumatic1 = DigitalOut(brain.three_wire_port.a)
 c15 = Controller()
 myVariable = 0
@@ -84,6 +85,8 @@ def rc_auto_loop_function_controller_1():
                 pneumatic1.set(False)
             elif c15.buttonY.pressing():
                 pneumatic1.set(True)
+            if c15.buttonLeft.pressing():
+                donut_eater.spin(FORWARD)
         wait(20,MSEC)
 remote_control_code_enabled = True
 rc_auto_loop_thread_controller_1 = Thread(rc_auto_loop_function_controller_1)
