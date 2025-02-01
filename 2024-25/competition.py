@@ -109,7 +109,6 @@ def when_started1():
     pneumatic1.set(False)
     donut_eater.set_velocity(100, PERCENT)
 def autonomousTasks(): #TODO #4 change direction
-    lifterator.spin(FORWARD)#lifterator goes up
     drivetrain.drive(FORWARD)#robot moves forward
     wait(1.5,SECONDS)#time it takes to bump into the ladder
     drivetrain.stop()
