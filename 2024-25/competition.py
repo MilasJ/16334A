@@ -41,8 +41,8 @@ RED = 0
 GREEN = 1
 BLUE = 2
 
-left = MotorGroup(Motor(Ports.PORT11, GREEN, True), Motor(Ports.PORT14, GREEN, True))
-right = MotorGroup(Motor(Ports.PORT12),Motor(Ports.PORT13))
+left = MotorGroup(Motor(Ports.PORT11,BLUE, True), Motor(Ports.PORT14, BLUE, True))
+right = MotorGroup(Motor(Ports.PORT12, BLUE),Motor(Ports.PORT13, BLUE))
 drivetrain = DriveTrain(left, right, 4*pi,10, 8, INCHES, 3/7)
 lifterator = Motor(Ports.PORT1, BLUE)
 donut_eater = Motor(Ports.PORT2, GREEN, True)
