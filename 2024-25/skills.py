@@ -102,9 +102,9 @@ def rc_auto_loop_function_controller_1():
 remote_control_code_enabled = True
 rc_auto_loop_thread_controller_1 = Thread(rc_auto_loop_function_controller_1)
 def when_started1():
-    drivetrain.set_drive_velocity(100, PERCENT)
-    drivetrain.set_turn_velocity(100, PERCENT)
-    lifterator.set_velocity(50, PERCENT)
+    drivetrain.set_drive_velocity(68, PERCENT)
+    drivetrain.set_turn_velocity(75, PERCENT)
+    lifterator.set_velocity(65, PERCENT)
     lifterator.set_stopping(HOLD)#lift stops immediately and locks in place
     pneumatic1.set(False)
     donut_eater.set_velocity(100, PERCENT)
