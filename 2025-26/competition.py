@@ -25,3 +25,4 @@ BLUE = 2
 
 left = MotorGroup(Motor(Ports.Port1, GREEN, True), Motor(Ports.Port2, GREEN, True), Motor(Ports.Port3, GREEN, True))
 right = MotorGroup(Motor(Ports.Port4, GREEN, True), Motor(Ports.Port5, GREEN, True), Motor(Ports.Port6, GREEN, True))
+drivetrain = DriveTrain(left, right, 2.75*pi, 13, 10.5, INCHES, 4/3)
