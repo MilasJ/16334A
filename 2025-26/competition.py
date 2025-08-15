@@ -40,9 +40,9 @@ RED = 0
 GREEN = 1
 BLUE = 2
 
-left = MotorGroup(Motor(Ports.Port1, GREEN, True), Motor(Ports.Port2, GREEN, True), Motor(Ports.Port3, GREEN))
-right = MotorGroup(Motor(Ports.Port4, GREEN), Motor(Ports.Port5, GREEN), Motor(Ports.Port6, GREEN, True))
-drivetrain = DriveTrain(left, right, 2.75*pi, 13, 10.5, INCHES, 3/4)
+left = MotorGroup(Motor(Ports.PORT1, GREEN, True), Motor(Ports.PORT2, GREEN, True), Motor(Ports.PORT3, GREEN))
+right = MotorGroup(Motor(Ports.PORT4, GREEN), Motor(Ports.PORT5, GREEN), Motor(Ports.PORT6, GREEN, True))
+drivetrain = DriveTrain(left, right, 2.75*pi, 13, 10.5, INCHES, 4/3)
 
 controller= Controller()
 
@@ -55,11 +55,15 @@ def drive_function():
         drive_right = controller.axis3.position() - controller.axis1.position()
 
         deadband = 15
-        drive_left *= int(drive_left >= deadband)
-        drive_right *= int(drive_right >= deadband)
+        drive_left *= int(abs(drive_left) >= deadband)
+        drive_right *= int(abs(drive_right) >= deadband)
 
         left.spin(FORWARD, drive_left, PERCENT)
         right.spin(FORWARD, drive_right, PERCENT)
         sleep(10)
 
 drive = Thread(drive_function)
+
+def setup():
+    drivetrain.set_drive_velocity(50, PERCENT)
+setup()
