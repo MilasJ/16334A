@@ -45,10 +45,10 @@ right = MotorGroup(Motor(Ports.PORT4, GREEN), Motor(Ports.PORT5, GREEN), Motor(P
 drivetrain = DriveTrain(left, right, 2.75*pi, 13, 10.5, INCHES, 4/3)
 
 controller= Controller()
-intake = Motor(Ports.PORT7, BLUE)
+intake = MotorGroup(Motor55(Ports.PORT7), Motor55(Ports.PORT8, True))
 
 def drive_function():
-    drive_left = 0
+    drive_left = 1
     drive_right = 0
 
     while True:
