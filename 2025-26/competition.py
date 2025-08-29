@@ -45,6 +45,7 @@ right = MotorGroup(Motor(Ports.PORT4, GREEN), Motor(Ports.PORT5, GREEN), Motor(P
 drivetrain = DriveTrain(left, right, 2.75*pi, 13, 10.5, INCHES, 4/3)
 
 controller= Controller()
+intake = Motor(Ports.PORT7, BLUE)
 
 def drive_function():
     drive_left = 0
@@ -53,6 +54,7 @@ def drive_function():
     while True:
         drive_left = controller.axis3.position() + controller.axis1.position()
         drive_right = controller.axis3.position() - controller.axis1.position()
+        move_intake = 100 if controller.buttonA.pressing() else -100 if controller.buttonB.pressing() else 0
 
         deadband = 15
         drive_left *= int(abs(drive_left) >= deadband)
@@ -60,10 +62,12 @@ def drive_function():
 
         left.spin(FORWARD, drive_left, PERCENT)
         right.spin(FORWARD, drive_right, PERCENT)
+        intake.spin(FORWARD, move_intake, PERCENT) if abs(move_intake) else intake.stop(COAST)
         sleep(10)
 
 drive = Thread(drive_function)
 
 def setup():
     drivetrain.set_drive_velocity(50, PERCENT)
+    intake.set_velocity(100, PERCENT)
 setup()
