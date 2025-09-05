@@ -45,7 +45,7 @@ right = MotorGroup(Motor(Ports.PORT4, GREEN), Motor(Ports.PORT5, GREEN), Motor(P
 drivetrain = DriveTrain(left, right, 2.75*pi, 13, 10.5, INCHES, 4/3)
 
 controller= Controller()
-intake = MotorGroup(Motor55(Ports.PORT7), Motor55(Ports.PORT8, True))
+intake = MotorGroup(Motor(Ports.PORT7), Motor(Ports.PORT8, GREEN, True))
 
 def drive_function():
     drive_left = 1
@@ -62,7 +62,7 @@ def drive_function():
 
         left.spin(FORWARD, drive_left, PERCENT)
         right.spin(FORWARD, drive_right, PERCENT)
-        intake.spin(FORWARD, move_intake, PERCENT) if abs(move_intake) else intake.stop(COAST)
+        intake.spin(FORWARD, move_intake, PERCENT) if abs(move_intake) else intake.stop()
         sleep(10)
 
 drive = Thread(drive_function)
