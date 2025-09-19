@@ -50,11 +50,13 @@ intake = MotorGroup(Motor(Ports.PORT7), Motor(Ports.PORT8, GREEN, True))
 def drive_function():
     drive_left = 1
     drive_right = 0
-
+    button_free = {"A":True, "B":True}
+    intake_moving = False
+    intake_reverse = False
     while True:
         drive_left = controller.axis3.position() + controller.axis1.position()
         drive_right = controller.axis3.position() - controller.axis1.position()
-        move_intake = 100 if controller.buttonA.pressing() else -100 if controller.buttonB.pressing() else 0
+        # move_intake = 100 if controller.buttonA.pressing() else -100 if controller.buttonB.pressing() else 0
 
         deadband = 15
         drive_left *= int(abs(drive_left) >= deadband)
@@ -62,7 +64,15 @@ def drive_function():
 
         left.spin(FORWARD, drive_left, PERCENT)
         right.spin(FORWARD, drive_right, PERCENT)
-        intake.spin(FORWARD, move_intake, PERCENT) if abs(move_intake) else intake.stop()
+        if button_free["A"] and controller.buttonA.pressing():
+            brain.screen.print("A")
+            intake_reverse = not intake_reverse if intake_moving else False
+            intake_moving = True
+        elif button_free["B"] and controller.buttonB.pressing():
+            intake_moving = False
+            brain.screen.print("B")
+        intake.spin(FORWARD if not intake_reverse else REVERSE, int(intake_moving)*100, PERCENT)
+        button_free = {"A":not controller.buttonA.pressing(), "B":not controller.buttonB.pressing()}
         sleep(10)
 
 drive = Thread(drive_function)
