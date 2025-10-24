@@ -46,6 +46,7 @@ drivetrain = DriveTrain(left, right, 2.75*pi, 13, 10.5, INCHES, 4/3)
 
 controller= Controller()
 intake = MotorGroup(Motor(Ports.PORT7), Motor(Ports.PORT8, GREEN, True))
+scoring = Motor(Ports.PORT9, BLUE)
 
 def drive_function():
     drive_left = 1
@@ -73,6 +74,12 @@ def drive_function():
             brain.screen.print("B")
         intake.spin(FORWARD if not intake_reverse else REVERSE, int(intake_moving)*100, PERCENT)
         button_free = {"A":not controller.buttonA.pressing(), "B":not controller.buttonB.pressing()}
+        if controller.buttonUp.pressing():
+            scoring.spin(FORWARD)
+        elif controller.buttonDown.pressing():
+            scoring.spin(REVERSE)
+        elif controller.buttonLeft.pressing():
+            scoring.stop()
         sleep(10)
 
 drive = Thread(drive_function)
@@ -80,4 +87,5 @@ drive = Thread(drive_function)
 def setup():
     drivetrain.set_drive_velocity(50, PERCENT)
     intake.set_velocity(100, PERCENT)
+    scoring.set_velocity(100, PERCENT)
 setup()
