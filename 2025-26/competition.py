@@ -88,4 +88,10 @@ def setup():
     drivetrain.set_drive_velocity(50, PERCENT)
     intake.set_velocity(100, PERCENT)
     scoring.set_velocity(100, PERCENT)
+def auton():
+    pass
+def driver():
+    while True:
+        wait(10, MSEC)
+comp = Competition(auton, driver)
 setup()
