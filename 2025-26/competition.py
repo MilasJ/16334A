@@ -72,7 +72,7 @@ def drive_function():
         elif button_free["B"] and controller.buttonB.pressing():
             intake_moving = False
             brain.screen.print("B")
-        intake.spin(FORWARD if not intake_reverse else REVERSE, int(intake_moving)*100, PERCENT)
+        intake.spin(FORWARD if not intake_reverse else REVERSE, int(intake_moving)*(50 if intake_reverse else 100), PERCENT)
         button_free = {"A":not controller.buttonA.pressing(), "B":not controller.buttonB.pressing()}
         if controller.buttonUp.pressing():
             scoring.spin(FORWARD)
@@ -88,4 +88,10 @@ def setup():
     drivetrain.set_drive_velocity(50, PERCENT)
     intake.set_velocity(100, PERCENT)
     scoring.set_velocity(100, PERCENT)
+def auton():
+    pass
+def driver():
+    while True:
+        wait(10, MSEC)
+comp = Competition(auton, driver)
 setup()
