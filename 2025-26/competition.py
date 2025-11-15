@@ -145,9 +145,16 @@ def auton():
     """Runs during the fifteen second autonomous period."""
     intake.spin(FORWARD)
     drivetrain.drive(FORWARD)
-    wait(3, SECONDS)
-    drivetrain.stop()
+    wait(2, SECONDS)
     intake.stop()
+    drivetrain.drive(REVERSE)
+    wait(1, SECONDS)
+    drivetrain.stop()
+    match_loader.set(True)
+    drivetrain.turn(LEFT)
+    wait(2, SECONDS)
+    drivetrain.stop()
+
 
 def driver():
     """Runs during the driving period."""
