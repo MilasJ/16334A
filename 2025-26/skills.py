@@ -1,9 +1,10 @@
-# region VEXcode Generated Robot Configuration
+#region VEXcode Generated Robot Configuration
 from vex import *
 import urandom
+import math
 
 # Brain should be defined by default
-brain = Brain()
+brain=Brain()
 
 # Robot configuration code
 
@@ -15,15 +16,10 @@ wait(30, MSEC)
 # Make random actually random
 def initializeRandomSeed():
     wait(100, MSEC)
-    random = (
-        brain.battery.voltage(MV)
-        + brain.battery.current(CurrentUnits.AMP) * 100
-        + brain.timer.system_high_res()
-    )
+    random = brain.battery.voltage(MV) + brain.battery.current(CurrentUnits.AMP) * 100 + brain.timer.system_high_res()
     urandom.seed(int(random))
-
-
-# Set random seed
+      
+# Set random seed 
 initializeRandomSeed()
 
 
@@ -33,14 +29,12 @@ def play_vexcode_sound(sound_name):
     print("VEXPlaySound:" + sound_name)
     wait(5, MSEC)
 
-
 # add a small delay to make sure we don't print in the middle of the REPL header
 wait(200, MSEC)
 # clear the console to make sure we don't have the REPL in the console
 print("\033[2J")
 
-# endregion VEXcode Generated Robot Configuration
-from math import pi
+#endregion VEXcode Generated Robot Configuration
 
 # These are assigned for readability regarding motor cartridges.
 RED = 0
@@ -61,7 +55,7 @@ right = MotorGroup(
     Motor(Ports.PORT5, GREEN, False),
     Motor(Ports.PORT6, GREEN, True),
 )
-drivetrain = DriveTrain(left, right, 2.75 * pi, 13, 10.5, INCHES, 4 / 3)
+drivetrain = DriveTrain(left, right, 2.75 * math.pi, 13, 10.5, INCHES, 4 / 3)
 
 controller = Controller()
 # The next two ports are the intake,

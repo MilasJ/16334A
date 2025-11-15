@@ -1,9 +1,10 @@
 # region VEXcode Generated Robot Configuration
 from vex import *
 import urandom
+import math
 
 # Brain should be defined by default
-brain = Brain()
+brain=Brain()
 
 # Robot configuration code
 
@@ -15,13 +16,8 @@ wait(30, MSEC)
 # Make random actually random
 def initializeRandomSeed():
     wait(100, MSEC)
-    random = (
-        brain.battery.voltage(MV)
-        + brain.battery.current(CurrentUnits.AMP) * 100
-        + brain.timer.system_high_res()
-    )
+    random = brain.battery.voltage(MV) + brain.battery.current(CurrentUnits.AMP) * 100 + brain.timer.system_high_res()
     urandom.seed(int(random))
-
 
 # Set random seed
 initializeRandomSeed()
@@ -33,15 +29,14 @@ def play_vexcode_sound(sound_name):
     print("VEXPlaySound:" + sound_name)
     wait(5, MSEC)
 
-
 # add a small delay to make sure we don't print in the middle of the REPL header
 wait(200, MSEC)
 # clear the console to make sure we don't have the REPL in the console
 print("\033[2J")
 
 # endregion VEXcode Generated Robot Configuration
-from math import pi
 
+pi = math.pi
 # These are assigned for readability regarding motor cartridges.
 RED = 0
 GREEN = 1
@@ -63,16 +58,17 @@ right = MotorGroup(
 )
 drivetrain = DriveTrain(left, right, 2.75 * pi, 13, 10.5, INCHES, 4 / 3)
 
-controller = Controller()
 # The next two ports are the intake,
 intake = MotorGroup(Motor(Ports.PORT7), Motor(Ports.PORT8, GREEN, True))
+
 # The next port is scoring,
 scoring = Motor(Ports.PORT9, BLUE)
+
 # And our only three-wired port is the match loader de-loader.
 match_loader = DigitalOut(brain.three_wire_port.a)  # Pneumatics! Yay!
 
 
-def drive_function():
+def controller_function():
     """Read controller input and move parts accordingly."""
     drive_left = 1
     drive_right = 0
@@ -84,7 +80,7 @@ def drive_function():
     while True:
         # The drivetrain uses rc controls:
         # the left joystick drives forward and backward,
-        # and the right joystick steers
+        # and the right joystick steers.
         drive_left = controller.axis3.position() + controller.axis1.position()
         drive_right = controller.axis3.position() - controller.axis1.position()
         deadband = 15
@@ -125,7 +121,8 @@ def drive_function():
 
         # The scoring is rather simple:
         # the up button makes the conveyor belt move blocks up,
-        # and the down button makes the conveyor belt move down.
+        # the down button makes the conveyor belt move down,
+        # and the left button makes it stop moving.
         if controller.buttonUp.pressing():
             scoring.spin(FORWARD)
         elif controller.buttonDown.pressing():
@@ -133,9 +130,6 @@ def drive_function():
         elif controller.buttonLeft.pressing():
             scoring.stop()
         sleep(10)
-
-
-drive = Thread(drive_function)
 
 
 # The following three functions are integral to running matches.
@@ -149,14 +143,18 @@ def setup():
 
 def auton():
     """Runs during the fifteen second autonomous period."""
-    match_loader.set(True)  # might not need this. determine auton later
-
+    intake.spin(FORWARD)
+    drivetrain.drive(FORWARD)
+    wait(3, SECONDS)
+    drivetrain.stop()
+    intake.stop()
 
 def driver():
     """Runs during the driving period."""
+    controller_function()
     while True:
         wait(10, MSEC)
 
 
-comp = Competition(auton, driver)
+comp = Competition(driver, auton)
 setup()
