@@ -112,8 +112,8 @@ def controller_function():
         }
 
         # The match loader needs to be able to move out of the way
-        # Thus, {button} makes it move out of the way,
-        # and {button} makes it come back to do its job
+        # Thus, the X button makes it move out of the way,
+        # and the Y button makes it come back to do its job
         if controller.buttonX.pressing():
             match_loader.set(False)
         elif controller.buttonY.pressing():

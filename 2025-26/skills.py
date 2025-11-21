@@ -36,6 +36,7 @@ print("\033[2J")
 
 #endregion VEXcode Generated Robot Configuration
 
+pi = math.pi
 # These are assigned for readability regarding motor cartridges.
 RED = 0
 GREEN = 1
@@ -111,8 +112,8 @@ def drive_function():
         }
 
         # The match loader needs to be able to move out of the way
-        # Thus, {button} makes it move out of the way,
-        # and {button} makes it come back to do its job
+        # Thus, the X button makes it move out of the way,
+        # and the Y button makes it come back to do its job
         if controller.buttonX.pressing():
             match_loader.set(False)
         elif controller.buttonY.pressing():
@@ -120,7 +121,8 @@ def drive_function():
 
         # The scoring is rather simple:
         # the up button makes the conveyor belt move blocks up,
-        # and the down button makes the conveyor belt move down.
+        # the down button makes the conveyor belt move down,
+        # and the left button makes it stop moving.
         if controller.buttonUp.pressing():
             scoring.spin(FORWARD)
         elif controller.buttonDown.pressing():
@@ -134,6 +136,9 @@ drive = Thread(drive_function)
 
 
 # The following three functions are integral to running matches.
+# I have incorporated them into running both skills match types in one program.
+# Thus, instead of having three programs, I only require two: one for competition
+# matches, and one for skills matches.
 def setup():
     """Runs before the match starts."""
     drivetrain.set_drive_velocity(50, PERCENT)
@@ -143,15 +148,15 @@ def setup():
 
 
 def auton():
-    """Runs during the fifteen second autonomous period."""
+    """Runs during autonomous skills matches."""
     match_loader.set(True)  # might not need this. determine auton later
 
 
 def driver():
-    """Runs during the driving period."""
+    """Runs during driver-controlled skills matches."""
     while True:
         wait(10, MSEC)
 
 
-comp = Competition(auton, driver)
+comp = Competition(driver, auton)
 setup()
