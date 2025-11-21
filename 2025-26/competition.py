@@ -137,7 +137,7 @@ def setup():
     """Runs before the match starts."""
     drivetrain.set_drive_velocity(50, PERCENT)
     intake.set_velocity(100, PERCENT)
-    scoring.set_velocity(100, PERCENT)
+    scoring.set_velocity(50, PERCENT)
     match_loader.set(False)  # for size purposes
 
 
@@ -145,16 +145,30 @@ def auton():
     """Runs during the fifteen second autonomous period."""
     intake.spin(FORWARD)
     drivetrain.drive(FORWARD)
-    wait(2, SECONDS)
-    intake.stop()
-    drivetrain.drive(REVERSE)
     wait(1, SECONDS)
     drivetrain.stop()
-    match_loader.set(True)
     drivetrain.turn(LEFT)
-    wait(2, SECONDS)
+    wait(200, MSEC)
     drivetrain.stop()
-
+    drivetrain.drive(FORWARD)
+    wait(1800, MSEC)
+    drivetrain.stop()
+    wait(100, MSEC)
+    intake.stop()
+    drivetrain.stop()
+    drivetrain.turn(LEFT)
+    wait(1450, MSEC)
+    drivetrain.stop()
+    drivetrain.drive(REVERSE)
+    wait(1000, MSEC)
+    drivetrain.stop()
+    scoring.spin(FORWARD)
+    wait(2, SECONDS)
+    scoring.stop()
+    match_loader.set(True)
+    drivetrain.drive(FORWARD)
+    wait(2500, MSEC)
+    drivetrain.stop()
 
 def driver():
     """Runs during the driving period."""
