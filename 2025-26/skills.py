@@ -58,16 +58,20 @@ right = MotorGroup(
 )
 drivetrain = DriveTrain(left, right, 2.75 * math.pi, 13, 10.5, INCHES, 4 / 3)
 
-controller = Controller()
-# The next two ports are the intake,
-intake = MotorGroup(Motor(Ports.PORT7), Motor(Ports.PORT8, GREEN, True))
+# The next port is a motor that moves a block-pushing rod,
+pusher = Motor(Ports.PORT7, GREEN)
+
+# The next port is the intake,
+intake = Motor(Ports.PORT8, GREEN, True)
+
 # The next port is scoring,
 scoring = Motor(Ports.PORT9, BLUE)
+
 # And our only three-wired port is the match loader de-loader.
 match_loader = DigitalOut(brain.three_wire_port.a)  # Pneumatics! Yay!
 
 
-def drive_function():
+def controller_function():
     """Read controller input and move parts accordingly."""
     drive_left = 1
     drive_right = 0
@@ -87,6 +91,7 @@ def drive_function():
         drive_right *= int(abs(drive_right) >= deadband)
         left.spin(FORWARD, drive_left, PERCENT)
         right.spin(FORWARD, drive_right, PERCENT)
+        pusher_out = False
 
         # The intake has some interesting settings:
         # the A button makes it spin, and the B button makes it stop.
@@ -129,10 +134,19 @@ def drive_function():
             scoring.spin(REVERSE)
         elif controller.buttonLeft.pressing():
             scoring.stop()
+
+        # The block-pushing arm is rather simple to program:
+        # The right button toggles between sticking it out and bring it back in.
+        # With this latest addition, we now use everything on the controller,
+        # except for the shoulders.
+        if controller.buttonRight.pressing():
+            if pusher_in:
+                pusher.spin_to_position(90, DEGREES, wait=False)
+            else:
+                pusher.spin_to_position(0, DEGREES, wait=False)
+            pusher_in = not pusher_in
+
         sleep(10)
-
-
-drive = Thread(drive_function)
 
 
 # The following three functions are integral to running matches.
@@ -143,17 +157,27 @@ def setup():
     """Runs before the match starts."""
     drivetrain.set_drive_velocity(50, PERCENT)
     intake.set_velocity(100, PERCENT)
-    scoring.set_velocity(100, PERCENT)
+    scoring.set_velocity(50, PERCENT)
     match_loader.set(False)  # for size purposes
 
 
 def auton():
     """Runs during autonomous skills matches."""
-    match_loader.set(True)  # might not need this. determine auton later
+    drivetrain.drive(FORWARD)
+    wait(2750, MSEC)
+    drivetrain.stop()
+    drivetrain.turn(LEFT)
+    wait(1100, MSEC)
+    drivetrain.stop()
+    match_loader.set(True)
+    drivetrain.drive(FORWARD)
+    wait(500, MSEC)
+    drivetrain.stop()  # As of yet, this section is unfinished.
 
 
 def driver():
     """Runs during driver-controlled skills matches."""
+    controller_function()
     while True:
         wait(10, MSEC)
 

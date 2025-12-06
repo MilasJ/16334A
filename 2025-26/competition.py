@@ -1,4 +1,4 @@
-# region VEXcode Generated Robot Configuration
+#region VEXcode Generated Robot Configuration
 from vex import *
 import urandom
 import math
@@ -18,8 +18,8 @@ def initializeRandomSeed():
     wait(100, MSEC)
     random = brain.battery.voltage(MV) + brain.battery.current(CurrentUnits.AMP) * 100 + brain.timer.system_high_res()
     urandom.seed(int(random))
-
-# Set random seed
+      
+# Set random seed 
 initializeRandomSeed()
 
 
@@ -34,7 +34,7 @@ wait(200, MSEC)
 # clear the console to make sure we don't have the REPL in the console
 print("\033[2J")
 
-# endregion VEXcode Generated Robot Configuration
+#endregion VEXcode Generated Robot Configuration
 
 pi = math.pi
 # These are assigned for readability regarding motor cartridges.
@@ -58,8 +58,11 @@ right = MotorGroup(
 )
 drivetrain = DriveTrain(left, right, 2.75 * pi, 13, 10.5, INCHES, 4 / 3)
 
-# The next two ports are the intake,
-intake = MotorGroup(Motor(Ports.PORT7), Motor(Ports.PORT8, GREEN, True))
+# The next port is a motor that moves a block-pushing rod,
+pusher = Motor(Ports.PORT7, GREEN, True)
+
+# The next port is the intake,
+intake = Motor(Ports.PORT8, GREEN, True)
 
 # The next port is scoring,
 scoring = Motor(Ports.PORT9, BLUE)
@@ -75,6 +78,7 @@ def controller_function():
     button_free = {"A": True, "B": True}
     intake_moving = False
     intake_reverse = False
+    pusher_in = True
 
     # This big forever loop runs one hundred times a second.
     while True:
@@ -129,6 +133,18 @@ def controller_function():
             scoring.spin(REVERSE)
         elif controller.buttonLeft.pressing():
             scoring.stop()
+
+        # The block-pushing arm is rather simple to program:
+        # The right button toggles between sticking it out and bring it back in.
+        # With this latest addition, we now use everything on the controller,
+        # except for the shoulders.
+        if controller.buttonRight.pressing():
+            if pusher_in:
+                pusher.spin_to_position(90, DEGREES, wait=False)
+            else:
+                pusher.spin_to_position(0, DEGREES, wait=False)
+            pusher_in = not pusher_in
+
         sleep(10)
 
 
@@ -170,9 +186,10 @@ def auton():
     wait(2500, MSEC)
     drivetrain.stop()
 
+
 def driver():
     """Runs during the driving period."""
-    controller_function()
+    drive = Thread(controller_function)
     while True:
         wait(10, MSEC)
 
