@@ -62,13 +62,18 @@ drivetrain = DriveTrain(left, right, 2.75 * pi, 13, 10.5, INCHES, 4 / 3)
 pusher = Motor(Ports.PORT7, GREEN, True)
 
 # The next port is the intake,
-intake = Motor(Ports.PORT8, GREEN, True)
+intake = Motor(Ports.PORT8, GREEN)
 
 # The next port is scoring,
-scoring = Motor(Ports.PORT9, BLUE)
+scoring = Motor(Ports.PORT9, GREEN)
 
 # And our only three-wired port is the match loader de-loader.
 match_loader = DigitalOut(brain.three_wire_port.a)  # Pneumatics! Yay!
+
+# VEX Forum mod James Pearman once described set_velocity() as "evil."
+# Thus, instead of using it, I have changed my code to have a dictionary of velocities.
+# I predefine it here, keys included, to avoid an error being thrown.
+velocities = {'intake': None, 'scoring': None}
 
 
 def controller_function():
@@ -99,15 +104,13 @@ def controller_function():
         # it reverses, expelling blocks instead of receiving them.
         # I also have it set to always start by spinning inward.
         if button_free["A"] and controller.buttonA.pressing():
-            brain.screen.print("A")
             intake_reverse = not intake_reverse if intake_moving else False
             intake_moving = True
         elif button_free["B"] and controller.buttonB.pressing():
             intake_moving = False
-            brain.screen.print("B")
         intake.spin(
             FORWARD if not intake_reverse else REVERSE,
-            int(intake_moving) * 100,
+            int(intake_moving) * velocities['intake'],
             PERCENT,
         )
         button_free = {
@@ -128,16 +131,13 @@ def controller_function():
         # the down button makes the conveyor belt move down,
         # and the left button makes it stop moving.
         if controller.buttonUp.pressing():
-            scoring.spin(FORWARD)
+            scoring.spin(FORWARD, velocities['scoring'])
         elif controller.buttonDown.pressing():
-            scoring.spin(REVERSE)
+            scoring.spin(REVERSE, velocities['scoring'])
         elif controller.buttonLeft.pressing():
             scoring.stop()
 
-        # The block-pushing arm is rather simple to program:
-        # The right button toggles between sticking it out and bring it back in.
-        # With this latest addition, we now use everything on the controller,
-        # except for the shoulders.
+        # Write documentation here
         if controller.buttonRight.pressing():
             if pusher_in:
                 pusher.spin_to_position(90, DEGREES, wait=False)
@@ -151,9 +151,13 @@ def controller_function():
 # The following three functions are integral to running matches.
 def setup():
     """Runs before the match starts."""
-    drivetrain.set_drive_velocity(50, PERCENT)
-    intake.set_velocity(100, PERCENT)
-    scoring.set_velocity(50, PERCENT)
+    drivetrain.set_drive_velocity(0, PERCENT)
+    global velocities
+    velocities = {
+        'intake': 50,
+        'scoring': 100,
+    }
+    scoring.set_velocity(0, PERCENT)
     match_loader.set(False)  # for size purposes
 
 
