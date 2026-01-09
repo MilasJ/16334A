@@ -95,7 +95,7 @@ def controller_function():
         drive_right *= int(abs(drive_right) >= deadband)
         left.spin(FORWARD, drive_left, PERCENT)
         right.spin(FORWARD, drive_right, PERCENT)
-        pusher_in = True
+        pusher_up = True
 
         # The intake has some interesting settings:
         # the A button makes it spin, and the B button makes it stop.
@@ -142,11 +142,11 @@ def controller_function():
         # With this latest addition, we now use everything on the controller,
         # except for the shoulders.
         if controller.buttonRight.pressing():
-            if pusher_in:
+            if pusher_up:
                 pusher.spin_to_position(90, DEGREES, wait=False)
             else:
-                pusher.spin_to_position(0, DEGREES, wait=False)
-            pusher_in = not pusher_in
+                pusher.spin_to_position(225, DEGREES, wait=False)
+            pusher_up = not pusher_up
 
         sleep(10)
 
@@ -163,7 +163,6 @@ def setup():
         "intake": 50,
         "scoring": 100,
     }
-    scoring.set_velocity(0, PERCENT)
     match_loader.set(False)  # for size purposes
 
 
@@ -183,7 +182,8 @@ def auton():
 
 def driver():
     """Runs during driver-controlled skills matches."""
-    controller_function()
+    pusher.spin_to_position(225, DEGREES, wait = False)
+    drive = Thread(controller_function)
     while True:
         wait(10, MSEC)
 

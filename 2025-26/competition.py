@@ -83,7 +83,7 @@ def controller_function():
     button_free = {"A": True, "B": True}
     intake_moving = False
     intake_reverse = False
-    pusher_in = True
+    pusher_up = True
 
     # This big forever loop runs one hundred times a second.
     while True:
@@ -139,11 +139,11 @@ def controller_function():
 
         # Write documentation here
         if controller.buttonRight.pressing():
-            if pusher_in:
+            if pusher_up:
                 pusher.spin_to_position(90, DEGREES, wait=False)
             else:
-                pusher.spin_to_position(0, DEGREES, wait=False)
-            pusher_in = not pusher_in
+                pusher.spin_to_position(225, DEGREES, wait=False)
+            pusher_up = not pusher_up
 
         sleep(10)
 
@@ -157,7 +157,7 @@ def setup():
         'intake': 50,
         'scoring': 100,
     }
-    scoring.set_velocity(0, PERCENT)
+    scoring.set_position(225, DEGREES)
     match_loader.set(False)  # for size purposes
 
 
@@ -193,6 +193,7 @@ def auton():
 
 def driver():
     """Runs during the driving period."""
+    pusher.spin_to_position(225, DEGREES, wait = False)
     drive = Thread(controller_function)
     while True:
         wait(10, MSEC)
