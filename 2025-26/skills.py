@@ -62,7 +62,7 @@ drivetrain = DriveTrain(left, right, 2.75 * pi, 13, 10.5, INCHES, 4 / 3)
 pusher = Motor(Ports.PORT7, GREEN, True)
 
 # The next port is the intake,
-intake = Motor(Ports.PORT8, GREEN)
+intake = Motor(Ports.PORT8, BLUE)
 
 # The next port is scoring,
 scoring = Motor(Ports.PORT9, GREEN)
@@ -131,9 +131,9 @@ def controller_function():
         # the down button makes the conveyor belt move down,
         # and the left button makes it stop moving.
         if controller.buttonUp.pressing():
-            scoring.spin(FORWARD, velocities["scoring"])
+            scoring.spin(FORWARD, velocities['scoring'], PERCENT)
         elif controller.buttonDown.pressing():
-            scoring.spin(REVERSE, velocities["scoring"])
+            scoring.spin(REVERSE, velocities['scoring'], PERCENT)
         elif controller.buttonLeft.pressing():
             scoring.stop()
 
@@ -157,7 +157,7 @@ def controller_function():
 # matches, and one for skills matches.
 def setup():
     """Runs before the match starts."""
-    drivetrain.set_drive_velocity(0, PERCENT)
+    drivetrain.set_drive_velocity(50, PERCENT)
     global velocities
     velocities = {
         "intake": 50,

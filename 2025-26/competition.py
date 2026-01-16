@@ -65,7 +65,7 @@ pusher = Motor(Ports.PORT7, GREEN, True)
 intake = Motor(Ports.PORT8, GREEN)
 
 # The next port is scoring,
-scoring = Motor(Ports.PORT9, GREEN)
+scoring = Motor(Ports.PORT9, BLUE)
 
 # And our only three-wired port is the match loader de-loader.
 match_loader = DigitalOut(brain.three_wire_port.a)  # Pneumatics! Yay!
@@ -131,9 +131,9 @@ def controller_function():
         # the down button makes the conveyor belt move down,
         # and the left button makes it stop moving.
         if controller.buttonUp.pressing():
-            scoring.spin(FORWARD, velocities['scoring'])
+            scoring.spin(FORWARD, velocities['scoring'], PERCENT)
         elif controller.buttonDown.pressing():
-            scoring.spin(REVERSE, velocities['scoring'])
+            scoring.spin(REVERSE, velocities['scoring'], PERCENT)
         elif controller.buttonLeft.pressing():
             scoring.stop()
 
@@ -151,7 +151,7 @@ def controller_function():
 # The following three functions are integral to running matches.
 def setup():
     """Runs before the match starts."""
-    drivetrain.set_drive_velocity(0, PERCENT)
+    drivetrain.set_drive_velocity(50, PERCENT)
     global velocities
     velocities = {
         'intake': 50,
@@ -163,26 +163,19 @@ def setup():
 
 def auton():
     """Runs during the fifteen second autonomous period."""
-    intake.spin(FORWARD)
+    intake.spin(FORWARD, velocities['intake'], PERCENT)
     drivetrain.drive(FORWARD)
-    wait(1, SECONDS)
-    drivetrain.stop()
-    drivetrain.turn(LEFT)
-    wait(200, MSEC)
-    drivetrain.stop()
-    drivetrain.drive(FORWARD)
-    wait(1800, MSEC)
+    wait(2000, MSEC)
     drivetrain.stop()
     wait(100, MSEC)
     intake.stop()
-    drivetrain.stop()
     drivetrain.turn(LEFT)
-    wait(1450, MSEC)
+    wait(1375, MSEC)
     drivetrain.stop()
     drivetrain.drive(REVERSE)
     wait(1000, MSEC)
     drivetrain.stop()
-    scoring.spin(FORWARD)
+    scoring.spin(FORWARD, velocities['scoring'], PERCENT)
     wait(2, SECONDS)
     scoring.stop()
     match_loader.set(True)
