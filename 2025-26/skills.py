@@ -58,9 +58,7 @@ right = MotorGroup(
 )
 drivetrain = DriveTrain(left, right, 2.75 * pi, 13, 10.5, INCHES, 4 / 3)
 
-# The next port is a motor that moves a block-pushing rod,
-pusher = Motor(Ports.PORT7, GREEN, True)
-
+# The next port was used for something, but that's been temporarily removed,
 # The next port is the intake,
 intake = Motor(Ports.PORT8, BLUE)
 
@@ -73,7 +71,8 @@ match_loader = DigitalOut(brain.three_wire_port.a)  # Pneumatics! Yay!
 # VEX Forum mod James Pearman once described set_velocity() as "evil."
 # Thus, instead of using it, I have changed my code to have a dictionary of velocities.
 # I predefine it here, keys included, to avoid an error being thrown.
-velocities = {'intake': None, 'scoring': None}
+velocities = {"intake": None, "scoring": None}
+
 
 def controller_function():
     """Read controller input and move parts accordingly."""
@@ -131,22 +130,11 @@ def controller_function():
         # the down button makes the conveyor belt move down,
         # and the left button makes it stop moving.
         if controller.buttonUp.pressing():
-            scoring.spin(FORWARD, velocities['scoring'], PERCENT)
+            scoring.spin(FORWARD, velocities["scoring"], PERCENT)
         elif controller.buttonDown.pressing():
-            scoring.spin(REVERSE, velocities['scoring'], PERCENT)
+            scoring.spin(REVERSE, velocities["scoring"], PERCENT)
         elif controller.buttonLeft.pressing():
             scoring.stop()
-
-        # The block-pushing arm is rather simple to program:
-        # The right button toggles between sticking it out and bring it back in.
-        # With this latest addition, we now use everything on the controller,
-        # except for the shoulders.
-        if controller.buttonRight.pressing():
-            if pusher_up:
-                pusher.spin_to_position(90, DEGREES, wait=False)
-            else:
-                pusher.spin_to_position(225, DEGREES, wait=False)
-            pusher_up = not pusher_up
 
         sleep(10)
 
@@ -182,7 +170,6 @@ def auton():
 
 def driver():
     """Runs during driver-controlled skills matches."""
-    pusher.spin_to_position(225, DEGREES, wait = False)
     drive = Thread(controller_function)
     while True:
         wait(10, MSEC)

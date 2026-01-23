@@ -58,9 +58,7 @@ right = MotorGroup(
 )
 drivetrain = DriveTrain(left, right, 2.75 * pi, 13, 10.5, INCHES, 4 / 3)
 
-# The next port is a motor that moves a block-pushing rod,
-pusher = Motor(Ports.PORT7, GREEN, True)
-
+# The next port was used for something, but that's been temporarily removed,
 # The next port is the intake,
 intake = Motor(Ports.PORT8, GREEN)
 
@@ -73,7 +71,7 @@ match_loader = DigitalOut(brain.three_wire_port.a)  # Pneumatics! Yay!
 # VEX Forum mod James Pearman once described set_velocity() as "evil."
 # Thus, instead of using it, I have changed my code to have a dictionary of velocities.
 # I predefine it here, keys included, to avoid an error being thrown.
-velocities = {'intake': None, 'scoring': None}
+velocities = {"intake": None, "scoring": None}
 
 
 def controller_function():
@@ -83,7 +81,6 @@ def controller_function():
     button_free = {"A": True, "B": True}
     intake_moving = False
     intake_reverse = False
-    pusher_up = True
 
     # This big forever loop runs one hundred times a second.
     while True:
@@ -110,7 +107,7 @@ def controller_function():
             intake_moving = False
         intake.spin(
             FORWARD if not intake_reverse else REVERSE,
-            int(intake_moving) * velocities['intake'],
+            int(intake_moving) * velocities["intake"],
             PERCENT,
         )
         button_free = {
@@ -131,19 +128,11 @@ def controller_function():
         # the down button makes the conveyor belt move down,
         # and the left button makes it stop moving.
         if controller.buttonUp.pressing():
-            scoring.spin(FORWARD, velocities['scoring'], PERCENT)
+            scoring.spin(FORWARD, velocities["scoring"], PERCENT)
         elif controller.buttonDown.pressing():
-            scoring.spin(REVERSE, velocities['scoring'], PERCENT)
+            scoring.spin(REVERSE, velocities["scoring"], PERCENT)
         elif controller.buttonLeft.pressing():
             scoring.stop()
-
-        # Write documentation here
-        if controller.buttonRight.pressing():
-            if pusher_up:
-                pusher.spin_to_position(90, DEGREES, wait=False)
-            else:
-                pusher.spin_to_position(225, DEGREES, wait=False)
-            pusher_up = not pusher_up
 
         sleep(10)
 
@@ -154,8 +143,8 @@ def setup():
     drivetrain.set_drive_velocity(50, PERCENT)
     global velocities
     velocities = {
-        'intake': 50,
-        'scoring': 100,
+        "intake": 50,
+        "scoring": 100,
     }
     scoring.set_position(225, DEGREES)
     match_loader.set(False)  # for size purposes
@@ -163,22 +152,24 @@ def setup():
 
 def auton():
     """Runs during the fifteen second autonomous period."""
-    intake.spin(FORWARD, velocities['intake'], PERCENT)
+    intake.spin(FORWARD, velocities["intake"], PERCENT)
     drivetrain.drive(FORWARD)
     wait(2000, MSEC)
     drivetrain.stop()
-    wait(100, MSEC)
-    intake.stop()
+    match_loader.set(True)
+    # wait(100, MSEC)
+    # intake.stop()
+    # match_loader.set(False)
     drivetrain.turn(LEFT)
-    wait(1375, MSEC)
+    wait(1325, MSEC)
     drivetrain.stop()
     drivetrain.drive(REVERSE)
-    wait(1000, MSEC)
+    wait(1112, MSEC)
     drivetrain.stop()
-    scoring.spin(FORWARD, velocities['scoring'], PERCENT)
-    wait(2, SECONDS)
+    scoring.spin(FORWARD, velocities["scoring"], PERCENT)
+    wait(2600, MSEC)
     scoring.stop()
-    match_loader.set(True)
+    # match_loader.set(True)
     drivetrain.drive(FORWARD)
     wait(2500, MSEC)
     drivetrain.stop()
@@ -186,7 +177,6 @@ def auton():
 
 def driver():
     """Runs during the driving period."""
-    pusher.spin_to_position(225, DEGREES, wait = False)
     drive = Thread(controller_function)
     while True:
         wait(10, MSEC)
