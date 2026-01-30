@@ -164,7 +164,7 @@ def auton():
     wait(1325, MSEC)
     drivetrain.stop()
     drivetrain.drive(REVERSE)
-    wait(1112, MSEC)
+    wait(1118, MSEC)
     drivetrain.stop()
     scoring.spin(FORWARD, velocities["scoring"], PERCENT)
     wait(2600, MSEC)

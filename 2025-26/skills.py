@@ -156,16 +156,30 @@ def setup():
 
 def auton():
     """Runs during autonomous skills matches."""
+    intake.spin(FORWARD, velocities["intake"], PERCENT)
     drivetrain.drive(FORWARD)
-    wait(2750, MSEC)
-    drivetrain.stop()
-    drivetrain.turn(LEFT)
-    wait(1100, MSEC)
+    wait(2000, MSEC)
     drivetrain.stop()
     match_loader.set(True)
+    # wait(100, MSEC)
+    # intake.stop()
+    # match_loader.set(False)
+    drivetrain.turn(LEFT)
+    wait(1325, MSEC)
+    drivetrain.stop()
+    drivetrain.drive(REVERSE)
+    wait(1118, MSEC)
+    drivetrain.stop()
+    scoring.spin(FORWARD, velocities["scoring"], PERCENT)
+    wait(2600, MSEC)
+    scoring.stop()
+    # match_loader.set(True)
     drivetrain.drive(FORWARD)
-    wait(500, MSEC)
-    drivetrain.stop()  # As of yet, this section is unfinished.
+    wait(2900, MSEC)
+    drivetrain.stop()
+    drivetrain.turn(LEFT)
+    wait(750, MSEC)
+    drivetrain.stop()
 
 
 def driver():
