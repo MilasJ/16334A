@@ -58,15 +58,19 @@ right = MotorGroup(
 )
 drivetrain = DriveTrain(left, right, 2.75 * pi, 13, 10.5, INCHES, 4 / 3)
 
-# The next port was used for something, but that's been temporarily removed,
+# The next port was used for the block pusher, but that has been modified, shown below,
 # The next port is the intake,
-intake = Motor(Ports.PORT8, BLUE)
+intake = Motor(Ports.PORT8, GREEN)
 
 # The next port is scoring,
-scoring = Motor(Ports.PORT9, GREEN)
+scoring = Motor(Ports.PORT9, BLUE)
 
-# And our only three-wired port is the match loader de-loader.
+# We also have two three-wired ports.
+# One of them is the match loader de-loader,
 match_loader = DigitalOut(brain.three_wire_port.a)  # Pneumatics! Yay!
+
+# And the other is a block pushing rod.
+block_pusher = DigitalOut(brain.three_wire_port.b)  # More pneumatics!
 
 # VEX Forum mod James Pearman once described set_velocity() as "evil."
 # Thus, instead of using it, I have changed my code to have a dictionary of velocities.
@@ -81,6 +85,7 @@ def controller_function():
     button_free = {"A": True, "B": True}
     intake_moving = False
     intake_reverse = False
+    pusher_down = True
 
     # This big forever loop runs one hundred times a second.
     while True:
@@ -94,7 +99,6 @@ def controller_function():
         drive_right *= int(abs(drive_right) >= deadband)
         left.spin(FORWARD, drive_left, PERCENT)
         right.spin(FORWARD, drive_right, PERCENT)
-        pusher_up = True
 
         # The intake has some interesting settings:
         # the A button makes it spin, and the B button makes it stop.
@@ -136,6 +140,13 @@ def controller_function():
         elif controller.buttonLeft.pressing():
             scoring.stop()
 
+        if controller.buttonL1.pressing() and pusher_down:
+            block_pusher.set(True)
+            pusher_down = False
+        elif controller.buttonR1.pressing() and not pusher_down:
+            block_pusher.set(False)
+            pusher_down = True
+
         sleep(10)
 
 
@@ -151,7 +162,10 @@ def setup():
         "intake": 50,
         "scoring": 100,
     }
-    match_loader.set(False)  # for size purposes
+
+    # for size purposes
+    match_loader.set(False)
+    block_pusher.set(False)
 
 
 def auton():
