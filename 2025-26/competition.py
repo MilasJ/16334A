@@ -60,7 +60,7 @@ drivetrain = DriveTrain(left, right, 2.75 * pi, 13, 10.5, INCHES, 4 / 3)
 
 # The next port was used for the block pusher, but that has been modified, shown below,
 # The next port is the intake,
-intake = Motor(Ports.PORT8, GREEN)
+intake = Motor(Ports.PORT8, BLUE)
 
 # The next port is scoring,
 scoring = Motor(Ports.PORT9, BLUE)
@@ -138,7 +138,7 @@ def controller_function():
             scoring.spin(REVERSE, velocities["scoring"], PERCENT)
         elif controller.buttonLeft.pressing():
             scoring.stop()
-
+        
         if controller.buttonL1.pressing() and pusher_down:
             block_pusher.set(True)
             pusher_down = False
@@ -156,12 +156,12 @@ def setup():
     global velocities
     velocities = {
         "intake": 50,
-        "scoring": 100,
+        "scoring": 50,
     }
     scoring.set_position(225, DEGREES)
 
     # for size purposes
-    match_loader.set(False)
+    match_loader.set(False)  
     block_pusher.set(False)
 
 
@@ -179,7 +179,7 @@ def auton():
     wait(1325, MSEC)
     drivetrain.stop()
     drivetrain.drive(REVERSE)
-    wait(1118, MSEC)
+    wait(1121, MSEC)
     drivetrain.stop()
     scoring.spin(FORWARD, velocities["scoring"], PERCENT)
     wait(2600, MSEC)

@@ -60,7 +60,7 @@ drivetrain = DriveTrain(left, right, 2.75 * pi, 13, 10.5, INCHES, 4 / 3)
 
 # The next port was used for the block pusher, but that has been modified, shown below,
 # The next port is the intake,
-intake = Motor(Ports.PORT8, GREEN)
+intake = Motor(Ports.PORT8, BLUE)
 
 # The next port is scoring,
 scoring = Motor(Ports.PORT9, BLUE)
@@ -160,7 +160,7 @@ def setup():
     global velocities
     velocities = {
         "intake": 50,
-        "scoring": 100,
+        "scoring": 50,
     }
 
     # for size purposes
@@ -170,30 +170,9 @@ def setup():
 
 def auton():
     """Runs during autonomous skills matches."""
-    intake.spin(FORWARD, velocities["intake"], PERCENT)
-    drivetrain.drive(FORWARD)
-    wait(2000, MSEC)
-    drivetrain.stop()
+    intake.spin(REVERSE, velocities["intake"], PERCENT)
     match_loader.set(True)
-    # wait(100, MSEC)
-    # intake.stop()
-    # match_loader.set(False)
-    drivetrain.turn(LEFT)
-    wait(1325, MSEC)
-    drivetrain.stop()
-    drivetrain.drive(REVERSE)
-    wait(1118, MSEC)
-    drivetrain.stop()
-    scoring.spin(FORWARD, velocities["scoring"], PERCENT)
-    wait(2600, MSEC)
-    scoring.stop()
-    # match_loader.set(True)
     drivetrain.drive(FORWARD)
-    wait(2900, MSEC)
-    drivetrain.stop()
-    drivetrain.turn(LEFT)
-    wait(750, MSEC)
-    drivetrain.stop()
 
 
 def driver():
